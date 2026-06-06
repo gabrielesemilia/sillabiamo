@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+  # Permette di avviare il workflow manualmente dalla scheda Actions
+  workflow_dispatch:
+
+# Imposta i permessi minimi necessari per GITHUB_TOKEN per consentire il deploy su GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Evita che build multiple si sovrappongano se fai push ravvicinati
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps:.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # Upload dell'intera repository come artefatto (avendo HTML statico nella root)
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # "." indica la root. Se i tuoi file statici sono in una cartella (es. "dist" o "public"), cambiala qui
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
