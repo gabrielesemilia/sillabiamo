@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sillabiamo! 🎮</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════ SCHERMATA SETUP ══════════════════════════ -->
+  <section id="setupScreen">
+    <div class="setup-card">
+      <h1 class="setup-title">🔤 Sillabiamo!</h1>
+      <p class="setup-sub">Scegli il tuo tema e la difficoltà</p>
+
+      <h2 class="setup-label">Chi sei?</h2>
+      <div class="tema-btns">
+
+        <button class="tema-btn" data-tema="maschio">
+          <!-- Macchinina -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 65" fill="none" aria-hidden="true">
+            <rect x="5" y="25" width="90" height="26" rx="8" fill="#E53935"/>
+            <path d="M22 25 L34 10 L68 10 L80 25Z" fill="#C62828"/>
+            <rect x="37" y="12" width="13" height="11" rx="3" fill="#B3E5FC"/>
+            <rect x="53" y="12" width="13" height="11" rx="3" fill="#B3E5FC"/>
+            <rect x="83" y="30" width="11" height="9"  rx="3" fill="#FDD835"/>
+            <circle cx="24" cy="51" r="12" fill="#263238"/>
+            <circle cx="24" cy="51" r="5"  fill="#607D8B"/>
+            <circle cx="73" cy="51" r="12" fill="#263238"/>
+            <circle cx="73" cy="51" r="5"  fill="#607D8B"/>
+          </svg>
+          <span>Maschietto</span>
+        </button>
+
+        <button class="tema-btn" data-tema="femmina">
+          <!-- Unicorno -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 90" fill="none" aria-hidden="true">
+            <ellipse cx="40" cy="60" rx="27" ry="24" fill="#FCE4EC"/>
+            <polygon points="40,8 33,38 47,38" fill="#FFD600"/>
+            <line x1="36" y1="18" x2="44" y2="27" stroke="#FF6F00" stroke-width="2"/>
+            <line x1="34" y1="29" x2="42" y2="36" stroke="#FF6F00" stroke-width="2"/>
+            <polygon points="54,45 59,30 64,45" fill="#FCE4EC" stroke="#F48FB1" stroke-width="1.5"/>
+            <path d="M56,42 Q72,50 68,64 Q76,55 73,68" stroke="#EC407A" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M58,40 Q78,46 76,62"             stroke="#CE93D8" stroke-width="4" fill="none" stroke-linecap="round"/>
+            <path d="M60,38 Q80,42 79,57"             stroke="#FFD600" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <circle cx="32" cy="58" r="5" fill="#212121"/>
+            <circle cx="33.5" cy="56.5" r="2" fill="#fff"/>
+            <ellipse cx="27" cy="68" rx="5" ry="3" fill="#F48FB1" opacity=".55"/>
+            <ellipse cx="30" cy="74" rx="3" ry="2" fill="#F48FB1"/>
+          </svg>
+          <span>Femminuccia</span>
+        </button>
+
+      </div>
+
+      <h2 class="setup-label">Livello</h2>
+      <div class="diff-btns">
+        <button class="diff-btn" data-diff="facile">
+          <span class="diff-dot dot-verde"></span>
+          <span class="diff-name">Facile</span>
+          <span class="diff-hint">2 sillabe</span>
+        </button>
+        <button class="diff-btn" data-diff="medio">
+          <span class="diff-dot dot-giallo"></span>
+          <span class="diff-name">Medio</span>
+          <span class="diff-hint">3 sillabe</span>
+        </button>
+        <button class="diff-btn" data-diff="difficile">
+          <span class="diff-dot dot-rosso"></span>
+          <span class="diff-name">Difficile</span>
+          <span class="diff-hint">4 sillabe</span>
+        </button>
+      </div>
+
+      <button id="startBtn" class="start-btn" disabled>Giochiamo! 🚀</button>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════ SCHERMATA GIOCO ══════════════════════════ -->
+  <section id="gameScreen" hidden>
+
+    <header class="header">
+      <button id="backBtn" class="back-btn" aria-label="Torna alle impostazioni">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12
+                   M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/>
+        </svg>
+      </button>
+      <div class="header-inner">
+        <span id="headerDecoLeft"  class="header-deco" aria-hidden="true"></span>
+        <h1 class="header-title">Sillabiamo!</h1>
+        <span id="headerDecoRight" class="header-deco" aria-hidden="true"></span>
+      </div>
+      <p class="header-sub">Cerca una parola e scopri le sue sillabe!</p>
+    </header>
+
+    <main class="main">
+
+      <!-- Barra di ricerca -->
+      <div class="search-container">
+        <div class="search-wrapper">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input
+            id="searchInput"
+            type="text"
+            class="search-input"
+            placeholder="Scrivi una parola…"
+            autocomplete="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+          <!-- Pulsante dado -->
+          <button id="randomBtn" class="random-btn" aria-label="Parola a caso">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 38 38" fill="none" aria-hidden="true">
+              <rect x="12" y="12" width="24" height="24" rx="5" fill="#E8EAF6" stroke="#9FA8DA" stroke-width="1.5"/>
+              <circle cx="19" cy="19" r="2.2" fill="#5C6BC0"/>
+              <circle cx="29" cy="19" r="2.2" fill="#5C6BC0"/>
+              <circle cx="19" cy="29" r="2.2" fill="#5C6BC0"/>
+              <circle cx="29" cy="29" r="2.2" fill="#5C6BC0"/>
+              <rect x="2" y="2" width="24" height="24" rx="5" fill="#fff" stroke="#C5CAE9" stroke-width="1.5"/>
+              <circle cx="9"  cy="9"  r="2.2" fill="#3F51B5"/>
+              <circle cx="19" cy="9"  r="2.2" fill="#3F51B5"/>
+              <circle cx="14" cy="14" r="2.2" fill="#3F51B5"/>
+              <circle cx="9"  cy="19" r="2.2" fill="#3F51B5"/>
+              <circle cx="19" cy="19" r="2.2" fill="#3F51B5"/>
+            </svg>
+          </button>
+          <button id="clearBtn" class="clear-btn" aria-label="Cancella" hidden>✕</button>
+        </div>
+        <ul id="dropdown" class="dropdown" hidden></ul>
+      </div>
+
+      <!-- Area sillabe -->
+      <section id="syllableArea" class="syllable-area" hidden>
+        <h2 id="selectedWord" class="selected-word"></h2>
+        <div id="syllableBoxes" class="syllable-boxes"></div>
+        <button id="readWordBtn" class="read-word-btn">
+          <span class="btn-icon">🔊</span>
+          <span class="btn-text">Leggi la parola!</span>
+        </button>
+      </section>
+
+      <!-- Stato iniziale -->
+      <div id="emptyState" class="empty-state">
+        <div class="empty-emoji">🐣</div>
+        <p>Cerca una parola per cominciare!</p>
+      </div>
+
+    </main>
+
+    <!-- Decorazioni flottanti (iniettate via JS in base al tema) -->
+    <div id="floatLeft"  class="float-deco" aria-hidden="true"></div>
+    <div id="floatRight" class="float-deco" aria-hidden="true"></div>
+
+  </section>
+
+  <script src="parole.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
