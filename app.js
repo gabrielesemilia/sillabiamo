@@ -293,7 +293,7 @@ function speakText(text, triggerEl) {
   }
   window.speechSynthesis.cancel();
 
-  const utter   = new SpeechSynthesisUtterance(text);
+  const utter   = new SpeechSynthesisUtterance(text.toLowerCase());
   utter.lang    = 'it-IT';
   utter.rate    = 0.85;
   utter.pitch   = 1.1;
