@@ -282,7 +282,7 @@ function renderSillabe(entry) {
     btn.className = 'syl-box';
     btn.textContent = sil;
     btn.setAttribute('aria-label', `Sillaba: ${sil}`);
-    btn.addEventListener('click', () => speakText(sil, btn));
+    btn.addEventListener('click', () => speakText(sil, btn, true));
     syllableBoxes.appendChild(btn);
   });
 
@@ -301,14 +301,16 @@ readWordBtn.addEventListener('click', () => {
 // Questo handler sblocca il contesto audio su dispositivi che richiedono un touch iniziale.
 window.addEventListener('touchstart', () => {}, { once: true, passive: true });
 
-function speakText(text, triggerEl) {
+function speakText(text, triggerEl, isSillaba = false) {
   if (!window.speechSynthesis) {
     alert('Il tuo browser non supporta la sintesi vocale 😢');
     return;
   }
   window.speechSynthesis.cancel();
 
-  const spoken  = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() + '.';
+  let spoken    = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  if (isSillaba) spoken = spoken.replace(/o$/, 'ò'); // es. "To" → "Tò": riconosciuto dal TTS italiano
+  spoken       += '.';
   const utter   = new SpeechSynthesisUtterance(spoken);
   utter.lang    = 'it-IT';
   utter.rate    = 0.85;
