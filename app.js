@@ -190,7 +190,22 @@ searchInput.addEventListener('input', () => {
   matches.forEach(entry => {
     const li = document.createElement('li');
     li.textContent = entry.parola;
-    li.addEventListener('pointerdown', e => { e.preventDefault(); selectEntry(entry); });
+
+    let touchStartY = 0;
+    li.addEventListener('touchstart', e => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    li.addEventListener('touchend', e => {
+      const delta = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (delta < 10) {
+        e.preventDefault();
+        selectEntry(entry);
+      }
+    });
+    li.addEventListener('mousedown', e => {
+      e.preventDefault();
+      selectEntry(entry);
+    });
     dropdown.appendChild(li);
   });
   dropdown.hidden = false;
@@ -293,7 +308,8 @@ function speakText(text, triggerEl) {
   }
   window.speechSynthesis.cancel();
 
-  const utter   = new SpeechSynthesisUtterance(text.toLowerCase());
+  const spoken  = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase() + '.';
+  const utter   = new SpeechSynthesisUtterance(spoken);
   utter.lang    = 'it-IT';
   utter.rate    = 0.85;
   utter.pitch   = 1.1;
@@ -306,7 +322,8 @@ function speakText(text, triggerEl) {
 
   const doSpeak = () => {
     const voices  = window.speechSynthesis.getVoices();
-    const itVoice = voices.find(v => v.lang.startsWith('it'));
+    const itVoice = voices.find(v => v.lang === 'it-IT') ||
+                    voices.find(v => v.lang.startsWith('it'));
     if (itVoice) utter.voice = itVoice;
     window.speechSynthesis.speak(utter);
   };
